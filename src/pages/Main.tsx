@@ -5,15 +5,20 @@ import {
   CardContent,
   CardMedia,
   Typography,
+  Chip,
 } from '@mui/material';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
-import MainHeader from '../components/MainHeader';
 import { Link } from 'react-router-dom';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
-const Main = () => {
+interface Props {
+  quizBalance: string;
+}
+
+const Main = ({ quizBalance }: Props) => {
   return (
     <>
-      <MainHeader />
+      <Chip icon={<AttachMoneyIcon />} label={`${quizBalance} QUIZ`} />
       <Card>
         <CardMedia
           component="img"

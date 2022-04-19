@@ -41,14 +41,21 @@ const Quiz = ({ answers, setAnswers }: Props) => {
   });
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [currentAnswer, setCurrentAnswer] = useState('');
+  const [countdown, setCountdown] = useState<number>(0);
 
   let navigate = useNavigate();
 
   const handleNextQuestion = (): void => {
     // Save current answer
-    let question = survey.questions[currentQuestion].text;
-    setAnswers([...answers, { question, answer: currentAnswer }]);
+    setAnswers([
+      ...answers,
+      {
+        question: survey.questions[currentQuestion].text,
+        answer: currentAnswer,
+      },
+    ]);
 
+    // Handle question or submit display
     if (currentQuestion < survey.questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
@@ -60,6 +67,20 @@ const Quiz = ({ answers, setAnswers }: Props) => {
     setSurvey(fakeData);
   }, []);
 
+  useEffect(() => {
+    if (survey.questions.length) {
+      setCountdown(survey.questions[currentQuestion].lifetimeSeconds);
+    }
+  }, [survey, currentQuestion]);
+
+  useEffect(() => {
+    let timer = setInterval(() => {
+      setCountdown(countdown - 1);
+      if (countdown === 0) handleNextQuestion();
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [survey, countdown]);
+
   if (!survey.title) return null;
 
   return (
@@ -69,8 +90,14 @@ const Quiz = ({ answers, setAnswers }: Props) => {
       </h1>
       <h3>{survey.questions[currentQuestion].text}</h3>
       <Box>
-        10 secs
-        <LinearProgress variant="determinate" value={100}></LinearProgress>
+        {countdown} seconds
+        <LinearProgress
+          variant="determinate"
+          value={
+            (countdown * 100) /
+            survey.questions[currentQuestion].lifetimeSeconds
+          }
+        ></LinearProgress>
       </Box>
       <FormControl>
         <RadioGroup onChange={(e) => setCurrentAnswer(e.target.value)}>

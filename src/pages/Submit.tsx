@@ -15,9 +15,9 @@ const Submit = ({ answers }: Props) => {
     <div>
       <Container>
         <Stack>
-          {answers.map((answer, key) => {
+          {answers.map((answer, index) => {
             return (
-              <Box>
+              <Box key={index}>
                 {answer.question}: {answer.answer}
               </Box>
             );
