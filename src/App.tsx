@@ -1,35 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-
-import MainHeader from './components/MainHeader/MainHeader';
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Typography,
-} from '@mui/material';
+import Main from './pages/Main';
+import Quiz from './pages/Quiz';
+import Submit from './pages/Submit';
 
 function App() {
   return (
     <div className="App">
-      <MainHeader></MainHeader>
-      <Card>
-        <CardMedia
-          component="img"
-          image="https://48tools.com/wp-content/uploads/2015/09/shortlink.png"
-          alt="quiz image"
-          height="130"
-        />
-        <CardContent>
-          <Typography variant="h5">Sample quiz</Typography>
-        </CardContent>
-        <CardActions>
-          <Button>Start</Button>
-        </CardActions>
-      </Card>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="sample-survey" element={<Quiz />}>
+          <Route path="submit" element={<Submit />} />
+          <Route path=":questionNumber" element={<div>Question number</div>} />
+        </Route>
+      </Routes>
     </div>
   );
 }
