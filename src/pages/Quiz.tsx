@@ -4,12 +4,15 @@ import {
   FormControl,
   FormControlLabel,
   LinearProgress,
+  Paper,
   Radio,
   RadioGroup,
+  Slide,
   Stack,
   Step,
   StepLabel,
   Stepper,
+  Typography,
 } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useEffect, useState } from 'react';
@@ -44,8 +47,9 @@ const Quiz = ({ answers, setAnswers }: Props) => {
     questions: [],
   });
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [currentAnswer, setCurrentAnswer] = useState('');
   const [countdown, setCountdown] = useState<number>(0);
+  const [value, setValue] = useState('');
+  const [slideTransition, setSlideTransition] = useState(true);
 
   let navigate = useNavigate();
 
@@ -55,16 +59,25 @@ const Quiz = ({ answers, setAnswers }: Props) => {
       ...answers,
       {
         question: survey.questions[currentQuestion].text,
-        answer: currentAnswer,
+        answer: value,
       },
     ]);
 
-    // Handle question or submit display
-    if (currentQuestion < survey.questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      navigate('submit');
-    }
+    // Clear current answer
+    setValue('');
+
+    // Transition
+    setSlideTransition(false);
+    let transitionInterval = setInterval(() => {
+      // Handle question or submit display
+      if (currentQuestion < survey.questions.length - 1) {
+        setSlideTransition(true);
+        setCurrentQuestion(currentQuestion + 1);
+      } else {
+        navigate('submit');
+      }
+      clearInterval(transitionInterval);
+    }, 350);
   };
 
   useEffect(() => {
@@ -78,19 +91,22 @@ const Quiz = ({ answers, setAnswers }: Props) => {
   }, [survey, currentQuestion]);
 
   // Timer
-  // useEffect(() => {
-  //   let timer = setInterval(() => {
-  //     setCountdown(countdown - 1);
-  //     if (countdown === 0) handleNextQuestion();
-  //   }, 1000);
-  //   return () => clearInterval(timer);
-  // }, [survey, countdown]);
+  useEffect(() => {
+    let timer = setInterval(() => {
+      setCountdown(countdown - 1);
+      if (countdown === 0) handleNextQuestion();
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [survey, countdown]);
 
   if (!survey.title) return null;
 
   return (
-    <Stack>
-      <Stepper activeStep={currentQuestion}>
+    <Stack sx={{ margin: '20px' }}>
+      <Stepper
+        activeStep={currentQuestion}
+        sx={{ minWidth: '300px', margin: 'auto' }}
+      >
         {survey.questions.map((question, index) => {
           return (
             <Step key={index}>
@@ -99,73 +115,83 @@ const Quiz = ({ answers, setAnswers }: Props) => {
           );
         })}
       </Stepper>
-      <Stack
-        spacing={2}
-        sx={{
-          margin: '20px',
-          padding: '20px',
-          backgroundColor: '#eeeeee',
-          borderRadius: '10px',
-        }}
-      >
-        <Box
+      <Slide in={slideTransition} direction="right">
+        <Paper
+          elevation={10}
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            margin: '20px',
+            padding: '20px',
+            backgroundColor: '#eeeeee',
+            borderRadius: '10px',
           }}
         >
-          <Box>{countdown} seconds</Box>
-          <Box sx={{ minWidth: '250px', margin: '5px' }}>
-            <LinearProgress
-              variant="determinate"
-              value={
-                (countdown * 100) /
-                survey.questions[currentQuestion].lifetimeSeconds
-              }
-            />
-          </Box>
-        </Box>
-        <h3>{survey.questions[currentQuestion].text}</h3>
-        <FormControl>
-          <RadioGroup
-            onChange={(e) => setCurrentAnswer(e.target.value)}
-            sx={{ marginBottom: '10px' }}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
           >
-            {survey.questions[currentQuestion].options.map((option, index) => {
-              return (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    margin: '5px',
-                    padding: '5px 10px',
-                    minWidth: '250px',
-                    borderRadius: '10px',
-                    border: '1px solid grey',
-                  }}
-                >
-                  <FormControlLabel
-                    label={option.text}
-                    value={option.text}
-                    control={<Radio />}
-                    key={index}
-                    sx={{ width: '100%' }}
-                  />
-                </Box>
-              );
-            })}
-          </RadioGroup>
-          <Box>
-            <Button
-              variant="contained"
-              endIcon={<NavigateNextIcon />}
-              onClick={handleNextQuestion}
-            >
-              Next
-            </Button>
+            <Box>
+              <Typography variant="subtitle2">{countdown} seconds</Typography>
+            </Box>
+            <Box sx={{ minWidth: '250px', margin: '5px' }}>
+              <LinearProgress
+                variant="determinate"
+                color="primary"
+                value={
+                  (countdown * 100) /
+                  survey.questions[currentQuestion].lifetimeSeconds
+                }
+              />
+            </Box>
           </Box>
-        </FormControl>
-      </Stack>
+          <h3>{survey.questions[currentQuestion].text}</h3>
+          <FormControl>
+            <RadioGroup
+              onChange={(e) => {
+                setValue(e.target.value);
+              }}
+              sx={{ marginBottom: '10px' }}
+              value={value}
+            >
+              {survey.questions[currentQuestion].options.map(
+                (option, index) => {
+                  return (
+                    <Paper
+                      sx={{
+                        display: 'flex',
+                        margin: '5px',
+                        padding: '5px 15px',
+                        width: '250px',
+                        borderRadius: '10px',
+                        backgroundColor: '#fcf0f6',
+                      }}
+                    >
+                      <FormControlLabel
+                        label={option.text}
+                        value={option.text}
+                        control={<Radio />}
+                        key={index}
+                        sx={{ width: '100%' }}
+                      />
+                    </Paper>
+                  );
+                }
+              )}
+            </RadioGroup>
+            <Box>
+              <Button
+                variant="contained"
+                endIcon={<NavigateNextIcon />}
+                onClick={handleNextQuestion}
+              >
+                Next
+              </Button>
+            </Box>
+          </FormControl>
+        </Paper>
+      </Slide>
     </Stack>
   );
 };

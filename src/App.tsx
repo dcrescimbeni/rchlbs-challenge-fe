@@ -7,10 +7,19 @@ import Main from './pages/Main';
 import quizAbi from './utils/quizAbi';
 import { ThemeProvider } from '@mui/system';
 import { createTheme } from '@mui/material/styles';
+import Quiz from './pages/Quiz';
+import Submit from './pages/Submit';
+import { Container } from '@mui/material';
+
+interface IQuestionAnswerPair {
+  question: string;
+  answer: string;
+}
 
 function App() {
   const [quizBalance, setQuizBalance] = useState('');
   const [network, setNetwork] = useState('');
+  const [answers, setAnswers] = useState<IQuestionAnswerPair[] | []>([]);
 
   useEffect(() => {
     const connectMetamask = async () => {
@@ -42,7 +51,7 @@ function App() {
   const theme = createTheme({
     palette: {
       primary: { main: '#f72585' },
-      secondary: { main: '#4361ee' },
+      secondary: { main: '#294be4' },
     },
     components: {
       MuiButton: {
@@ -75,13 +84,26 @@ function App() {
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <Routes>
-          <Route
-            path="/"
-            element={<Main quizBalance={quizBalance} network={network} />}
-          />
-          <Route path="sample-survey/*" element={<QuizHeader />}></Route>
-        </Routes>
+        <QuizHeader
+          quizBalance={quizBalance}
+          setAnswers={setAnswers}
+        ></QuizHeader>
+        <Container maxWidth="sm">
+          <Routes>
+            <Route
+              path="/"
+              element={<Main quizBalance={quizBalance} network={network} />}
+            />
+            <Route
+              path="sample-survey"
+              element={<Quiz answers={answers} setAnswers={setAnswers} />}
+            ></Route>
+            <Route
+              path="sample-survey/submit"
+              element={<Submit answers={answers} setAnswers={setAnswers} />}
+            />
+          </Routes>
+        </Container>
       </ThemeProvider>
     </div>
   );

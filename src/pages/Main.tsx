@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import { Link } from 'react-router-dom';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 interface Props {
@@ -21,16 +20,6 @@ interface Props {
 const Main = ({ quizBalance, network }: Props) => {
   return (
     <>
-      <AppBar position="static" sx={{ padding: '10px' }}>
-        <Box>
-          <Chip
-            icon={<AttachMoneyIcon />}
-            color="secondary"
-            label={`${quizBalance} QUIZ`}
-            sx={{ color: 'white', fontWeight: 'bold' }}
-          />
-        </Box>
-      </AppBar>
       <Paper
         elevation={3}
         sx={{
