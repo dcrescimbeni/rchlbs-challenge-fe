@@ -1,12 +1,4 @@
-import {
-  Container,
-  Box,
-  Stack,
-  Button,
-  Typography,
-  Paper,
-  Slide,
-} from '@mui/material';
+import { Box, Stack, Button, Typography, Paper, Slide } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import DoneIcon from '@mui/icons-material/Done';
@@ -38,7 +30,15 @@ const Submit = ({ answers, setAnswers }: Props) => {
 
   return (
     <Slide direction="left" in={visible}>
-      <Container>
+      <Paper
+        elevation={10}
+        sx={{
+          margin: '20px',
+          padding: '20px 30px',
+          backgroundColor: '#eeeeee',
+          borderRadius: '10px',
+        }}
+      >
         <Stack spacing={1} sx={{ marginBottom: '30px' }}>
           <Typography variant="h5">
             Survey completed
@@ -50,12 +50,13 @@ const Submit = ({ answers, setAnswers }: Props) => {
               <Paper
                 key={index}
                 sx={{
-                  backgroundColor: '#eee',
-                  borderRadius: '10px',
                   display: 'flex',
+                  margin: 'auto',
+                  padding: '5px 15px',
+                  borderRadius: '10px',
+                  backgroundColor: '#fcf0f6',
                   flexDirection: 'column',
                   alignItems: 'flex-start',
-                  padding: '10px',
                 }}
               >
                 <Box>
@@ -73,7 +74,7 @@ const Submit = ({ answers, setAnswers }: Props) => {
         >
           Submit
         </Button>
-      </Container>
+      </Paper>
     </Slide>
   );
 };

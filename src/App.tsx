@@ -6,7 +6,7 @@ import QuizHeader from './components/QuizHeader';
 import Main from './pages/Main';
 import quizAbi from './utils/quizAbi';
 import { ThemeProvider } from '@mui/system';
-import { createTheme } from '@mui/material/styles';
+import theme from './theme';
 import Quiz from './pages/Quiz';
 import Submit from './pages/Submit';
 import { Container } from '@mui/material';
@@ -48,39 +48,6 @@ function App() {
     }
   }, []);
 
-  const theme = createTheme({
-    palette: {
-      primary: { main: '#f72585' },
-      secondary: { main: '#294be4' },
-    },
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            borderRadius: '30px',
-            padding: '10px 35px',
-            fontWeight: 'bold',
-          },
-        },
-      },
-      MuiFormControlLabel: {
-        styleOverrides: {
-          root: {
-            backgroundColor: 'secondary',
-          },
-        },
-      },
-      MuiLinearProgress: {
-        styleOverrides: {
-          root: {
-            height: '25px',
-            borderRadius: '20px',
-          },
-        },
-      },
-    },
-  });
-
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
@@ -90,10 +57,7 @@ function App() {
         ></QuizHeader>
         <Container maxWidth="sm">
           <Routes>
-            <Route
-              path="/"
-              element={<Main quizBalance={quizBalance} network={network} />}
-            />
+            <Route path="/" element={<Main network={network} />} />
             <Route
               path="sample-survey"
               element={<Quiz answers={answers} setAnswers={setAnswers} />}
