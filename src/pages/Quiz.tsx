@@ -78,19 +78,19 @@ const Quiz = ({ answers, setAnswers }: Props) => {
   }, [survey, currentQuestion]);
 
   // Timer
-  useEffect(() => {
-    let timer = setInterval(() => {
-      setCountdown(countdown - 1);
-      if (countdown === 0) handleNextQuestion();
-    }, 1000);
-    return () => clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [survey, countdown]);
+  // useEffect(() => {
+  //   let timer = setInterval(() => {
+  //     setCountdown(countdown - 1);
+  //     if (countdown === 0) handleNextQuestion();
+  //   }, 1000);
+  //   return () => clearInterval(timer);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [survey, countdown]);
 
   if (!survey.title) return null;
 
   return (
-    <Stack sx={{ margin: '20px' }}>
+    <Stack sx={{ margin: { xs: '0px', sm: '20px' } }}>
       <QuestionsStepper currentQuestion={currentQuestion} survey={survey} />
       <Slide in={slideTransition} direction="right">
         <Paper
