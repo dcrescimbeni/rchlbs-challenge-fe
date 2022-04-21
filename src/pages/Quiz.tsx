@@ -1,21 +1,8 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  Paper,
-  RadioGroup,
-  Slide,
-  Stack,
-  Step,
-  StepLabel,
-  Stepper,
-} from '@mui/material';
-
+import { Paper, Slide, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
-import fakeData from '../utils/fakeData.json';
 import { useNavigate } from 'react-router-dom';
+import fakeData from '../utils/fakeData.json';
 import Timer from '../components/Timer';
-import OptionCard from '../components/OptionCard';
 import OptionsForm from '../components/OptionsForm';
 import QuestionsStepper from '../components/QuestionsStepper';
 
