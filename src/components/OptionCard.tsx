@@ -29,6 +29,7 @@ const OptionCard = ({ option, index }: Props) => {
         label={option.text}
         value={option.text}
         control={<Radio />}
+        sx={{ width: '100%' }}
       />
     </Paper>
   );
