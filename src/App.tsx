@@ -38,7 +38,6 @@ function App() {
       let quizBalance = await quizContract.balanceOf(userAddress);
       let formattedQuizBalance = ethers.utils.formatUnits(quizBalance, 6);
       setQuizBalance(formattedQuizBalance);
-      // console.log(typeof formattedQuizBalance);
     };
 
     if (window.ethereum) {
