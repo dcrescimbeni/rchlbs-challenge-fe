@@ -13,9 +13,10 @@ interface IQuestionAnswerPair {
 interface Props {
   answers: IQuestionAnswerPair[] | [];
   setAnswers: (value: IQuestionAnswerPair[]) => void;
+  refreshMetamaskConnection: () => void;
 }
 
-const Submit = ({ answers, setAnswers }: Props) => {
+const Submit = ({ answers, setAnswers, refreshMetamaskConnection }: Props) => {
   const [visible, setVisible] = useState(true);
 
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const Submit = ({ answers, setAnswers }: Props) => {
       navigate('/');
       clearInterval(transitionInterval);
     }, 350);
+    refreshMetamaskConnection();
   };
 
   return (

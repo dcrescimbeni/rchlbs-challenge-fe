@@ -29,7 +29,7 @@ const Timer = ({ countdown, survey, currentQuestion }: Props) => {
       <Box>
         <Typography variant="subtitle2">{countdown} seconds</Typography>
       </Box>
-      <Box sx={{ minWidth: '250px', margin: '5px' }}>
+      <Box sx={{ minWidth: { xs: '200px', sm: '250px' }, margin: '5px' }}>
         <LinearProgress
           variant="determinate"
           color="primary"

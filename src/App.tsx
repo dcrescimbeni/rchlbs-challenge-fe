@@ -21,14 +21,14 @@ function App() {
   const [network, setNetwork] = useState('');
   const [answers, setAnswers] = useState<IQuestionAnswerPair[] | []>([]);
 
-  useEffect(() => {
-    const connectMetamask = async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      let userAddress = await signer.getAddress();
-      let network = await provider.getNetwork();
-      setNetwork(network.name);
+  const refreshMetamaskConnection = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    let userAddress = await signer.getAddress();
+    let network = await provider.getNetwork();
+    setNetwork(network.name);
 
+    if (network.name === 'ropsten') {
       const quiz = {
         address: '0x74F0B668Ea3053052DEAa5Eedd1815f579f0Ee03',
         abi: quizAbi,
@@ -38,14 +38,24 @@ function App() {
       let quizBalance = await quizContract.balanceOf(userAddress);
       let formattedQuizBalance = ethers.utils.formatUnits(quizBalance, 6);
       setQuizBalance(formattedQuizBalance);
-    };
+    }
+  };
 
+  useEffect(() => {
     if (window.ethereum) {
-      connectMetamask();
+      window.ethereum.on('chainChanged', () => {
+        refreshMetamaskConnection();
+      });
+    }
+  });
+
+  useEffect(() => {
+    if (window.ethereum) {
+      refreshMetamaskConnection();
     } else {
       alert('install metamask extension!!');
     }
-  }, []);
+  }, [network]);
 
   return (
     <div className="App">
@@ -53,17 +63,25 @@ function App() {
         <QuizHeader
           quizBalance={quizBalance}
           setAnswers={setAnswers}
+          network={network}
+          setNetwork={setNetwork}
         ></QuizHeader>
         <Container maxWidth="sm">
           <Routes>
-            <Route path="/" element={<Main network={network} />} />
+            <Route path="/" element={<Main />} />
             <Route
               path="sample-survey"
               element={<Quiz answers={answers} setAnswers={setAnswers} />}
             ></Route>
             <Route
               path="sample-survey/submit"
-              element={<Submit answers={answers} setAnswers={setAnswers} />}
+              element={
+                <Submit
+                  answers={answers}
+                  setAnswers={setAnswers}
+                  refreshMetamaskConnection={refreshMetamaskConnection}
+                />
+              }
             />
           </Routes>
         </Container>
