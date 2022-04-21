@@ -78,14 +78,14 @@ const Quiz = ({ answers, setAnswers }: Props) => {
   }, [survey, currentQuestion]);
 
   // Timer
-  // useEffect(() => {
-  //   let timer = setInterval(() => {
-  //     setCountdown(countdown - 1);
-  //     if (countdown === 0) handleNextQuestion();
-  //   }, 1000);
-  //   return () => clearInterval(timer);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [survey, countdown]);
+  useEffect(() => {
+    let timer = setInterval(() => {
+      setCountdown(countdown - 1);
+      if (countdown === 0) handleNextQuestion();
+    }, 1000);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [survey, countdown]);
 
   if (!survey.title) return null;
 
