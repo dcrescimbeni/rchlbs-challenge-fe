@@ -1,4 +1,11 @@
-import { AppBar, Avatar, Box, Button, Chip } from '@mui/material';
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
@@ -49,7 +56,12 @@ const QuizHeader = ({
         }}
       >
         <HomeOutlinedIcon
-          sx={{ color: 'white' }}
+          sx={{
+            color: 'white',
+            '&:hover': {
+              cursor: 'pointer',
+            },
+          }}
           fontSize="large"
           onClick={handleHomeClick}
         />
@@ -57,7 +69,13 @@ const QuizHeader = ({
           <Chip
             icon={<AttachMoneyIcon />}
             color="secondary"
-            label={`${quizBalance} QUIZ`}
+            label={
+              quizBalance === '' ? (
+                <CircularProgress size={20} sx={{ color: 'white' }} />
+              ) : (
+                `${quizBalance} QUIZ`
+              )
+            }
             sx={{ color: 'white', fontWeight: 'bold' }}
           />
         ) : (
