@@ -20,12 +20,12 @@ const OptionCard = ({ option, index }: Props) => {
         borderRadius: '10px',
         backgroundColor: '#fcf0f6',
       }}
+      key={index}
     >
       <FormControlLabel
         label={option.text}
         value={option.text}
         control={<Radio />}
-        key={index}
         sx={{ width: '100%' }}
       />
     </Paper>
