@@ -22,13 +22,15 @@ function App() {
   const [answers, setAnswers] = useState<IQuestionAnswerPair[] | []>([]);
 
   const refreshMetamaskConnection = async () => {
-    let accounts = await window.ethereum.request({
-      method: 'eth_requestAccounts',
-    });
-
+    // let accounts = await window.ethereum.request({
+    //   method: 'eth_requestAccounts',
+    // });
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const wallet = new ethers.Wallet(accounts[0], provider);
-    let userAddress = await wallet.getAddress();
+    const wallet = await provider.send('eth_requestAccounts', []);
+
+    // const wallet = new ethers.Wallet(accounts[0], provider);
+    // let userAddress = await wallet.getAddress();
     let network = await provider.getNetwork();
     setNetwork(network.name);
 
@@ -43,7 +45,7 @@ function App() {
         quiz.abi,
         provider
       );
-      let quizBalance = await quizContract.balanceOf(userAddress);
+      let quizBalance = await quizContract.balanceOf(wallet[0]);
       let formattedQuizBalance = ethers.utils.formatUnits(quizBalance, 6);
       setQuizBalance(formattedQuizBalance);
     }
