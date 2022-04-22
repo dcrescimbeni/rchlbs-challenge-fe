@@ -46,7 +46,7 @@ const QuizHeader = ({
   };
 
   return (
-    <AppBar position="static" sx={{ padding: '10px', marginBottom: '50px' }}>
+    <AppBar position="static" sx={{ padding: '10px', marginBottom: '50px', height: '65px' }}>
       <Box
         sx={{
           display: 'flex',
@@ -81,6 +81,7 @@ const QuizHeader = ({
         ) : (
           <Button
             variant="contained"
+            size="small"
             color="secondary"
             onClick={handleSwitchNetwork}
             startIcon={<CloudSyncIcon />}
