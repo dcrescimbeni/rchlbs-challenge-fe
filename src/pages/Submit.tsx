@@ -49,7 +49,7 @@ const Submit = ({ answers, setAnswers, refreshMetamaskConnection }: Props) => {
           </Typography>
 
           {answers.map((answer, index) => {
-            return <AnswerCard answer={answer} index={index} />;
+            return <AnswerCard answer={answer} key={index} />;
           })}
         </Stack>
         <Button

@@ -38,7 +38,7 @@ const OptionsForm = ({
         value={value}
       >
         {survey.questions[currentQuestion].options.map((option, index) => {
-          return <OptionCard option={option} index={index} />;
+          return <OptionCard option={option} key={index} />;
         })}
       </RadioGroup>
       <Box>

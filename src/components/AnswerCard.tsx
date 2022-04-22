@@ -8,13 +8,11 @@ interface IQuestionAnswerPair {
 
 interface Props {
   answer: IQuestionAnswerPair;
-  index: number;
 }
 
-const AnswerCard = ({ answer, index }: Props) => {
+const AnswerCard = ({ answer }: Props) => {
   return (
     <Paper
-      key={index}
       sx={{
         display: 'flex',
         margin: 'auto',

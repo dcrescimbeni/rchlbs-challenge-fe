@@ -6,10 +6,9 @@ interface IOption {
 
 interface Props {
   option: IOption;
-  index: number;
 }
 
-const OptionCard = ({ option, index }: Props) => {
+const OptionCard = ({ option }: Props) => {
   return (
     <Paper
       sx={{
@@ -23,7 +22,6 @@ const OptionCard = ({ option, index }: Props) => {
         borderRadius: '10px',
         backgroundColor: '#fcf0f6',
       }}
-      key={index}
     >
       <FormControlLabel
         label={option.text}
